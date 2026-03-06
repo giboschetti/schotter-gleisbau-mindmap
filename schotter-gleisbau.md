@@ -1,0 +1,197 @@
+# Schotter Gleisbau (SBB / RTE)
+
+## 1. Rechtliche Grundlagen
+- Ausführungsbestimmungen zur Eisenbahnverordnung (AB-EBV)
+- Regelwerk Technik Eisenbahn (RTE)
+- Interne SBB-Weisungen
+- Gleiskategorien
+  - Hauptgleise HG 1–5 (Zuggleise)
+    - Einteilung nach GBRT/Tag und Geschwindigkeit
+  - Nebengleise (Rangiergleise)
+- Streckenausbaustandard
+  - Zielbilder für Oberbaumaterial
+
+## 2. Unterbau
+- Anforderungen
+  - Tragfähig
+  - Verformungsarm
+  - Frostsicher
+- Schichtaufbau
+  - Untergrund
+  - Dammschüttung
+  - Übergangsschicht / Drainage
+  - Fundationsschicht
+  - Sperrschicht
+- Materialien
+  - Bituminöse Sperrschicht
+    - Asphaltbeton Typ AC RAIL 16/22
+  - Mineralische Sperrschicht
+    - Ton- oder Kalkmergel
+  - Planumsschutzschicht (PSS)
+    - Frostsicheres Kiesgemisch 0/32
+- Technische Spezifikationen
+  - ME1-Modul Grenzwerte (Verformbarkeit)
+  - Auf Planie und Planum
+- Entwässerung
+  - Quergefälle 3–5%
+  - Bahngräben
+  - Sickergräben / Sickerleitungen
+  - Schutz gegen Feinmaterialaufstösse
+
+## 3. Oberbau
+- Aufbau
+  - Gleisrost
+  - Schotterbett
+- Gleisschotter
+  - Gebrochenes Hartgestein
+  - Klasse 1: HG 1–2
+  - Klasse 2: HG 3–5
+- Schotterbettdicke
+  - Regeldicke 30–35 cm
+  - Minimum 20 cm (Nebengleise)
+- Schwellen
+  - Betonschwellen
+    - Monoblock B91
+    - Zweiblockschwellen
+    - Nur in lückenlosen Gleisen
+  - Stahlschwellen
+    - Trog-Stahlschwellen
+    - Y-Schwellen
+  - Holzschwellen
+    - Imprägnierte Eiche
+    - Übergangsbereiche / geringe Bauhöhe
+- Schienen
+  - Profile
+    - 60E1 (SBB VI)
+    - 54E2 (SBB IV)
+    - 46E1 (SBB I)
+  - Stahlgüten
+    - R260 (Standard)
+    - R350HT (kopfgehärtet, enge Bögen)
+  - Befestigungen
+    - Systeme W/Ws (Beton)
+    - Systeme K/Ke (Holz/Stahl)
+    - Spannklemmen Skl 1, 3, 14
+    - Kunststoffzwischenlagen
+
+## 4. Lückenloses Gleis (LVG / CWR)
+- Prinzip
+  - Temperaturschwankungen → Längskräfte statt Längenänderungen
+- Neutralisation
+  - Herstellung spannungsloser Zustand
+  - Sollwert Neutralisationstemperatur: 25°C
+- Stabilität
+  - Schutz gegen Gleisverwerfung
+  - Querverschiebewiderstand
+    - Schotterbettprofil
+    - Verdichtung
+  - Sicherungskappen (SiK)
+    - Enge Radien
+    - Erhöhung Verschiebewiderstand
+- Längswanderung
+  - Begrenzung durch Schienenklemmen
+  - System Fair
+  - Festpunkte
+
+## 5. Weichen und Kreuzungen
+- Funktion
+  - Verzweigung / Durchschneidung von Fahrwegen
+- Typen
+  - Einfachweichen (EW)
+  - Kreuzungsweichen (EKW / DKW)
+  - Gleisdurchschneidungen (GD)
+- Bauarten
+  - Federweichen SBB I, IV, VI
+- Komponenten
+  - Zungenvorrichtung (hZV)
+  - Stockschienen
+  - Herzstücke
+    - Starr
+    - Mit beweglicher Spitze
+  - Radlenker
+- Ausrüstung
+  - Trockenlaufgleitplatten (schmierfrei)
+  - Rollenlager (Reduktion Umstellkräfte)
+  - Weichenheizungen
+- Kontrollmasse
+  - Spurweite
+  - Leitweite
+  - Rillenweite
+  - Durchgangsweite
+
+## 6. Trassierung und Geometrie
+- Horizontale Elemente
+  - Gerade
+  - Übergangsbogen (Klothoide)
+  - Kreisbogen
+- Vertikale Elemente
+  - Längsneigung
+  - Ausrundungsradien (Kuppen / Wannen)
+- Schlüsselparameter
+  - Spurweite: 1435 mm
+  - Überhöhung (ü)
+  - Überhöhungsfehlbetrag (üf)
+- Gleisversicherung
+  - Versicherungspunkte VM, VT, VK
+  - Dauerhafte Fixierung der geometrischen Lage
+
+## 7. Lichtraumprofil und Abstände
+- Grenzlinien
+  - EBV 1–4
+    - Doppelstockwagen
+    - Neubaustrecken
+- Sicherheitsräume
+  - Dienstweg (bD)
+  - Schlupfweg (bS)
+  - Fensterraum (bF)
+- Gleisabstände
+  - Mittenabstände Parallelgleise
+  - Regelwert HG: 3.80 m
+
+## 8. Einbau und Instandhaltung
+- Stopfarbeiten
+  - Heben und Richten des Gleisrostes
+  - 1. Stopfung
+  - 2. Stopfung
+  - 3. Stopfung
+  - Vormessen der Ist-Lage
+- Schweissen
+  - Aluminothermisch (Thermit)
+    - Verbindungsschweissung im Gleis
+  - Abbrennstumpfschweissen
+    - Stationär
+    - Mobil
+  - Schweissen bei tiefen Temperaturen
+    - Bis -10°C unter strengen Auflagen
+- Zerstörungsfreie Prüfung
+  - Ultraschallprüfung (Schienenfehler)
+  - Wirbelstromprüfung (Head Checks)
+- Schienenpflege
+  - Präventives Schleifen / Reprofilieren
+  - Korrektives Schleifen
+
+## 9. Spezialthemen
+- Brücken
+  - Interaktion Gleis-Tragwerk
+  - Dilatationsvorrichtungen (DV)
+  - Hilfsbrücken
+    - Temporäre Stahlkonstruktionen
+    - Geschwindigkeitsbeschränkung 80–100 km/h
+- Bahnübergänge
+  - Gleistragplatten
+  - Gummimatten
+  - Holz
+  - Entwässerung und Signalisation
+- Elastische Komponenten
+  - Unterschottermatten (USM)
+  - Schwellenbesohlung (USP)
+  - Körperschalldämmung
+  - Starrer Unterbau
+- Sicherheit am Arbeitsplatz
+  - Sicherheitsdispositiv (SiDi)
+  - Warnsysteme (ATW)
+  - Erdungsmassnahmen
+- Flankenschutz
+  - Entgleisungsweichen
+  - Hayes-Entgleisungsvorrichtungen
+  - Schutz von Zugfahrstrassen

@@ -1,0 +1,453 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Schotter Gleisbau – Interaktive Mindmap</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-family: ui-sans-serif, system-ui, sans-serif; }
+#mindmap { display: block; width: 100vw; height: 100vh; }
+.markmap-dark { background: #27272a; color: white; }
+
+/* Clickable node indicator */
+.has-detail foreignObject { cursor: pointer !important; }
+.has-detail foreignObject div { text-decoration: underline dotted #3b82f6 !important; text-underline-offset: 3px; }
+
+/* Overlay */
+#dialog-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55); z-index: 9999;
+  align-items: center; justify-content: center;
+}
+#dialog-overlay.open { display: flex; }
+
+/* Dialog box */
+#dialog-box {
+  background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  width: min(680px, 94vw); max-height: 85vh; display: flex; flex-direction: column;
+  overflow: hidden; animation: dlgIn 0.18s ease;
+}
+@keyframes dlgIn { from { transform: scale(0.93) translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+#dialog-header {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  color: #fff; padding: 18px 22px; display: flex; align-items: flex-start; gap: 12px;
+}
+#dialog-header h2 { font-size: 1.1rem; font-weight: 700; flex: 1; line-height: 1.4; }
+#dialog-close {
+  background: rgba(255,255,255,0.2); border: none; color: #fff;
+  width: 30px; height: 30px; border-radius: 50%; font-size: 1.2rem;
+  cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+#dialog-close:hover { background: rgba(255,255,255,0.35); }
+
+#dialog-body { overflow-y: auto; padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+
+.dlg-section h3 {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #6b7280; margin-bottom: 8px;
+}
+
+/* Norm badges */
+.norm-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.norm-badge {
+  background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;
+  border-radius: 6px; padding: 3px 9px; font-size: 0.78rem; font-weight: 600;
+}
+
+/* Values table */
+.values-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.values-table tr:not(:last-child) td { border-bottom: 1px solid #f3f4f6; }
+.values-table td { padding: 6px 8px; vertical-align: top; }
+.values-table td:first-child { color: #374151; font-weight: 600; width: 42%; }
+.values-table td:last-child { color: #111827; }
+.values-table tr:hover td { background: #f9fafb; }
+
+/* Description */
+.dlg-desc { font-size: 0.88rem; color: #374151; line-height: 1.65; }
+
+/* Footer hint */
+#dialog-hint { font-size: 0.75rem; color: #9ca3af; text-align: center; padding: 10px 22px 16px; border-top: 1px solid #f3f4f6; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/style.css">
+</head>
+<body>
+<svg id="mindmap"></svg>
+
+<div id="dialog-overlay">
+  <div id="dialog-box">
+    <div id="dialog-header">
+      <h2 id="dialog-title"></h2>
+      <button id="dialog-close" title="Schliessen">&#x2715;</button>
+    </div>
+    <div id="dialog-body"></div>
+    <div id="dialog-hint">Klicke auf einen unterstrichenen Knoten f&#xfc;r Details &bull; ESC zum Schliessen</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/index.js"></script>
+
+<script>((r) => { setTimeout(r); })(() => {
+  const { markmap, mm } = window;
+  const toolbar = new markmap.Toolbar();
+  toolbar.attach(mm);
+  const el = toolbar.render();
+  el.setAttribute("style", "position:absolute;bottom:20px;right:20px");
+  document.body.append(el);
+})</script>
+
+<script>((getMarkmap, getOptions, root2, jsonOptions) => {
+  const markmap = getMarkmap();
+  window.mm = markmap.Markmap.create("svg#mindmap", (getOptions || markmap.deriveOptions)(jsonOptions), root2);
+  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    document.documentElement.classList.add("markmap-dark");
+  }
+})(() => window.markmap, null, {"content":"Schotter Gleisbau (SBB / RTE)","children":[{"content":"1. Rechtliche Grundlagen","children":[{"content":"Ausf&#xfc;hrungsbestimmungen zur Eisenbahnverordnung (AB-EBV)","children":[],"payload":{"tag":"li"}},{"content":"Regelwerk Technik Eisenbahn (RTE)","children":[],"payload":{"tag":"li"}},{"content":"Interne SBB-Weisungen","children":[],"payload":{"tag":"li"}},{"content":"Gleiskategorien","children":[{"content":"Hauptgleise HG 1&#x2013;5 (Zuggleise)","children":[{"content":"Einteilung nach GBRT/Tag und Geschwindigkeit","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Nebengleise (Rangiergleise)","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Streckenausbaustandard","children":[{"content":"Zielbilder f&#xfc;r Oberbaumaterial","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"h2"}},{"content":"2. Unterbau","children":[{"content":"Anforderungen","children":[{"content":"Tragf&#xe4;hig","children":[],"payload":{"tag":"li"}},{"content":"Verformungsarm","children":[],"payload":{"tag":"li"}},{"content":"Frostsicher","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Schichtaufbau","children":[{"content":"Untergrund","children":[],"payload":{"tag":"li"}},{"content":"Dammsch&#xfc;ttung","children":[],"payload":{"tag":"li"}},{"content":"&#xdc;bergangsschicht / Drainage","children":[],"payload":{"tag":"li"}},{"content":"Fundationsschicht","children":[],"payload":{"tag":"li"}},{"content":"Sperrschicht","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Materialien","children":[{"content":"Bitumin&#xf6;se Sperrschicht","children":[{"content":"Asphaltbeton Typ AC RAIL 16/22","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Mineralische Sperrschicht","children":[{"content":"Ton- oder Kalkmergel","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Planumsschutzschicht (PSS)","children":[{"content":"Frostsicheres Kiesgemisch 0/32","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Technische Spezifikationen","children":[{"content":"ME1-Modul Grenzwerte (Verformbarkeit)","children":[],"payload":{"tag":"li"}},{"content":"Auf Planie und Planum","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Entw&#xe4;sserung","children":[{"content":"Quergef&#xe4;lle 3&#x2013;5%","children":[],"payload":{"tag":"li"}},{"content":"Bahngr&#xe4;ben","children":[],"payload":{"tag":"li"}},{"content":"Sickergr&#xe4;ben / Sickerleitungen","children":[],"payload":{"tag":"li"}},{"content":"Schutz gegen Feinmaterialaufst&#xf6;sse","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"h2"}},{"content":"3. Oberbau","children":[{"content":"Gleisschotter","children":[{"content":"Gebrochenes Hartgestein","children":[],"payload":{"tag":"li"}},{"content":"Klasse 1: HG 1&#x2013;2","children":[],"payload":{"tag":"li"}},{"content":"Klasse 2: HG 3&#x2013;5","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Schotterbettdicke","children":[{"content":"Regeldicke 30&#x2013;35 cm","children":[],"payload":{"tag":"li"}},{"content":"Minimum 20 cm (Nebengleise)","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Schwellen","children":[{"content":"Betonschwellen","children":[{"content":"Monoblock B91","children":[],"payload":{"tag":"li"}},{"content":"Zweiblockschwellen","children":[],"payload":{"tag":"li"}},{"content":"Nur in l&#xfc;ckenlosen Gleisen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Stahlschwellen","children":[{"content":"Trog-Stahlschwellen","children":[],"payload":{"tag":"li"}},{"content":"Y-Schwellen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Holzschwellen","children":[{"content":"Impr&#xe4;gnierte Eiche","children":[],"payload":{"tag":"li"}},{"content":"&#xdc;bergangsbereiche / geringe Bauh&#xf6;he","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Schienen","children":[{"content":"Profile","children":[{"content":"60E1 (SBB VI)","children":[],"payload":{"tag":"li"}},{"content":"54E2 (SBB IV)","children":[],"payload":{"tag":"li"}},{"content":"46E1 (SBB I)","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Stahlg&#xfc;ten","children":[{"content":"R260 (Standard)","children":[],"payload":{"tag":"li"}},{"content":"R350HT (kopfgeh&#xe4;rtet, enge B&#xf6;gen)","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Befestigungen","children":[{"content":"Systeme W/Ws (Beton)","children":[],"payload":{"tag":"li"}},{"content":"Systeme K/Ke (Holz/Stahl)","children":[],"payload":{"tag":"li"}},{"content":"Spannklemmen Skl 1, 3, 14","children":[],"payload":{"tag":"li"}},{"content":"Kunststoffzwischenlagen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"h2"}},{"content":"4. L&#xfc;ckenloses Gleis (LVG / CWR)","children":[{"content":"Prinzip","children":[{"content":"Temperaturschwankungen &#x2192; L&#xe4;ngskr&#xe4;fte statt L&#xe4;ngen&#xe4;nderungen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Neutralisation","children":[{"content":"Herstellung spannungsloser Zustand","children":[],"payload":{"tag":"li"}},{"content":"Sollwert Neutralisationstemperatur: 25&#xb0;C","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Stabilit&#xe4;t","children":[{"content":"Schutz gegen Gleisverwerfung","children":[],"payload":{"tag":"li"}},{"content":"Querverschiebewiderstand","children":[{"content":"Schotterbettprofil","children":[],"payload":{"tag":"li"}},{"content":"Verdichtung","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Sicherungskappen (SiK)","children":[{"content":"Enge Radien","children":[],"payload":{"tag":"li"}},{"content":"Erh&#xf6;hung Verschiebewiderstand","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"L&#xe4;ngswanderung","children":[{"content":"Begrenzung durch Schienenklemmen","children":[],"payload":{"tag":"li"}},{"content":"System Fair","children":[],"payload":{"tag":"li"}},{"content":"Festpunkte","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"h2"}},{"content":"5. Weichen und Kreuzungen","children":[{"content":"Typen","children":[{"content":"Einfachweichen (EW)","children":[],"payload":{"tag":"li"}},{"content":"Kreuzungsweichen (EKW / DKW)","children":[],"payload":{"tag":"li"}},{"content":"Gleisdurchschneidungen (GD)","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Bauarten","children":[{"content":"Federweichen SBB I, IV, VI","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Komponenten","children":[{"content":"Zungenvorrichtung (hZV)","children":[],"payload":{"tag":"li"}},{"content":"Stockschienen","children":[],"payload":{"tag":"li"}},{"content":"Herzst&#xfc;cke","children":[{"content":"Starr","children":[],"payload":{"tag":"li"}},{"content":"Mit beweglicher Spitze","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Radlenker","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Ausr&#xfc;stung","children":[{"content":"Trockenlaufgleitplatten (schmierfrei)","children":[],"payload":{"tag":"li"}},{"content":"Rollenlager (Reduktion Umstellkr&#xe4;fte)","children":[],"payload":{"tag":"li"}},{"content":"Weichenheizungen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Kontrollmasse","children":[{"content":"Spurweite","children":[],"payload":{"tag":"li"}},{"content":"Leitweite","children":[],"payload":{"tag":"li"}},{"content":"Rillenweite","children":[],"payload":{"tag":"li"}},{"content":"Durchgangsweite","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"h2"}},{"content":"6. Trassierung und Geometrie","children":[{"content":"Horizontale Elemente","children":[{"content":"Gerade","children":[],"payload":{"tag":"li"}},{"content":"&#xdc;bergangsbogen (Klothoide)","children":[],"payload":{"tag":"li"}},{"content":"Kreisbogen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Vertikale Elemente","children":[{"content":"L&#xe4;ngsneigung","children":[],"payload":{"tag":"li"}},{"content":"Ausrundungsradien (Kuppen / Wannen)","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Schl&#xfc;sselparameter","children":[{"content":"Spurweite: 1435 mm","children":[],"payload":{"tag":"li"}},{"content":"&#xdc;berh&#xf6;hung (&#xfc;)","children":[],"payload":{"tag":"li"}},{"content":"&#xdc;berh&#xf6;hungsfehlbetrag (&#xfc;f)","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Gleisversicherung","children":[{"content":"Versicherungspunkte VM, VT, VK","children":[],"payload":{"tag":"li"}},{"content":"Dauerhafte Fixierung der geometrischen Lage","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"h2"}},{"content":"7. Lichtraumprofil und Abst&#xe4;nde","children":[{"content":"Grenzlinien","children":[{"content":"EBV 1&#x2013;4","children":[{"content":"Doppelstockwagen","children":[],"payload":{"tag":"li"}},{"content":"Neubaustrecken","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Sicherheitsr&#xe4;ume","children":[{"content":"Dienstweg (bD)","children":[],"payload":{"tag":"li"}},{"content":"Schlupfweg (bS)","children":[],"payload":{"tag":"li"}},{"content":"Fensterraum (bF)","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Gleisabst&#xe4;nde","children":[{"content":"Mittenabst&#xe4;nde Parallelgleise","children":[],"payload":{"tag":"li"}},{"content":"Regelwert HG: 3.80 m","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"h2"}},{"content":"8. Einbau und Instandhaltung","children":[{"content":"Stopfarbeiten","children":[{"content":"Heben und Richten des Gleisrostes","children":[],"payload":{"tag":"li"}},{"content":"1. Stopfung","children":[],"payload":{"tag":"li"}},{"content":"2. Stopfung","children":[],"payload":{"tag":"li"}},{"content":"3. Stopfung","children":[],"payload":{"tag":"li"}},{"content":"Vormessen der Ist-Lage","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Schweissen","children":[{"content":"Aluminothermisch (Thermit)","children":[{"content":"Verbindungsschweissung im Gleis","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Abbrennstumpfschweissen","children":[{"content":"Station&#xe4;r","children":[],"payload":{"tag":"li"}},{"content":"Mobil","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Schweissen bei tiefen Temperaturen","children":[{"content":"Bis -10&#xb0;C unter strengen Auflagen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Zerst&#xf6;rungsfreie Pr&#xfc;fung","children":[{"content":"Ultraschallpr&#xfc;fung (Schienenfehler)","children":[],"payload":{"tag":"li"}},{"content":"Wirbelstrompr&#xfc;fung (Head Checks)","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Schienenpflege","children":[{"content":"Pr&#xe4;ventives Schleifen / Reprofilieren","children":[],"payload":{"tag":"li"}},{"content":"Korrektives Schleifen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"h2"}},{"content":"9. Spezialthemen","children":[{"content":"Br&#xfc;cken","children":[{"content":"Interaktion Gleis-Tragwerk","children":[],"payload":{"tag":"li"}},{"content":"Dilatationsvorrichtungen (DV)","children":[],"payload":{"tag":"li"}},{"content":"Hilfsbr&#xfc;cken","children":[{"content":"Tempor&#xe4;re Stahlkonstruktionen","children":[],"payload":{"tag":"li"}},{"content":"Geschwindigkeitsbeschr&#xe4;nkung 80&#x2013;100 km/h","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Bahn&#xfc;berg&#xe4;nge","children":[{"content":"Gleistragplatten","children":[],"payload":{"tag":"li"}},{"content":"Gummimatten","children":[],"payload":{"tag":"li"}},{"content":"Holz","children":[],"payload":{"tag":"li"}},{"content":"Entw&#xe4;sserung und Signalisation","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Elastische Komponenten","children":[{"content":"Unterschottermatten (USM)","children":[],"payload":{"tag":"li"}},{"content":"Schwellenbesohlung (USP)","children":[],"payload":{"tag":"li"}},{"content":"K&#xf6;rperschalld&#xe4;mmung","children":[],"payload":{"tag":"li"}},{"content":"Starrer Unterbau","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Sicherheit am Arbeitsplatz","children":[{"content":"Sicherheitsdispositiv (SiDi)","children":[],"payload":{"tag":"li"}},{"content":"Warnsysteme (ATW)","children":[],"payload":{"tag":"li"}},{"content":"Erdungsmassnahmen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}},{"content":"Flankenschutz","children":[{"content":"Entgleisungsweichen","children":[],"payload":{"tag":"li"}},{"content":"Hayes-Entgleisungsvorrichtungen","children":[],"payload":{"tag":"li"}},{"content":"Schutz von Zugfahrstrassen","children":[],"payload":{"tag":"li"}}],"payload":{"tag":"li"}}],"payload":{"tag":"h2"}}],"payload":{"tag":"h1"}}, null)
+</script>
+
+<script>
+// ─── DETAIL DATA ─────────────────────────────────────────────────────────────
+const DETAILS = {
+
+  // RECHTLICHE GRUNDLAGEN
+  "Ausführungsbestimmungen zur Eisenbahnverordnung (AB-EBV)": {
+    norms: ["AB-EBV (SR 742.141.1)"],
+    values: [["Herausgeber","Bundesamt für Verkehr (BAV)"],["Zweck","Rechtsverbindliche Ausführungsbestimmungen zur EBV"],["Relevante Artikel","Art. 25 Unterbau, Art. 31 Schienen/LVG, Art. 32 Weichen, Art. 41 Sicherheit"]],
+    desc: "Die AB-EBV konkretisiert die technischen Anforderungen der Eisenbahnverordnung. Für den Gleisbau definiert sie Mindestanforderungen an Unterbau, Oberbau, Weichen und Sicherheit, die durch die SBB-internen RTE-Normen weiter präzisiert werden."
+  },
+  "Regelwerk Technik Eisenbahn (RTE)": {
+    norms: ["R RTE 21110 (Unterbau)","R RTE 22041 (LVG)","R RTE 22056 (Weichen)","R RTE 22240 (Schienen)","R RTE 20100 (Sicherheit)"],
+    values: [["Herausgeber","SBB Infrastruktur"],["Anwendung","Verbindlich für alle SBB-Gleisbauprojekte"],["Ergänzungen","D RTE (Datenblätter), I-Normen (Interne Weisungen)"]],
+    desc: "Das RTE ist das technische Regelwerk der SBB für den Bau und Unterhalt der Eisenbahninfrastruktur. Es umfasst Planungs-, Bau- und Abnahmevorschriften für alle Gleisbaukomponenten."
+  },
+  "Einteilung nach GBRT/Tag und Geschwindigkeit": {
+    norms: ["R RTE 21110","AB-EBV Art. 25"],
+    values: [["HG 1","≥ 30'000 GBRT/Tag, V > 160 km/h"],["HG 2","≥ 20'000 GBRT/Tag, V > 120 km/h"],["HG 3","≥ 10'000 GBRT/Tag"],["HG 4","≥ 5'000 GBRT/Tag"],["HG 5","< 5'000 GBRT/Tag"],["NG (Nebengleis)","Rangiergleise, V ≤ 40 km/h"]],
+    desc: "Die Gleisbelastungsgruppe (GBRT = Gewichtstonne Brutto/Tag) bestimmt die Qualitätsklasse aller Oberbaumaterialien. Je höher die GBRT und Geschwindigkeit, desto höhere Anforderungen gelten für Schotter, Schwellen, Schienen und Befestigungen."
+  },
+
+  // UNTERBAU
+  "Asphaltbeton Typ AC RAIL 16/22": {
+    norms: ["R RTE 21110 Kap. 5.4","SN 640 431 (Asphalt)"],
+    values: [["Typ","AC RAIL 16 oder AC RAIL 22"],["Anwendung","Bituminöse Sperrschicht unter Schotterbett"],["Dicke","mind. 8 cm (verdichtet)"],["Quergefälle","≥ 3 % (Ableitung Hangwasser)"],["Vorteil","Impermeabel, verhindert Feinmaterialaufstoss"]],
+    desc: "Der Asphaltbeton AC RAIL dient als bituminöse Sperrschicht zwischen Planum und Schotterbett. Er verhindert das kapillare Aufsteigen von Feinmaterial aus dem Untergrund in den Schotter (Feinmaterialaufstoss) und leitet Sickerwasser seitlich ab."
+  },
+  "Ton- oder Kalkmergel": {
+    norms: ["R RTE 21110 Kap. 5.4"],
+    values: [["Material","Natürlicher Ton oder Kalkmergel"],["Dicke","mind. 30 cm (verdichtet)"],["Quergefälle","≥ 5 %"],["Einsatz","Mineralische Alternative zur bituminösen Sperrschicht"],["Nachteil","Geringere Dichtigkeit als Asphalt"]],
+    desc: "Mineralische Sperrschichten aus Ton oder Kalkmergel werden als kostengünstigere Alternative zur Asphaltschicht eingesetzt, insbesondere bei Nebengleisen. Das höhere Quergefälle von 5% ist erforderlich, um die geringere Wasserdichtigkeit zu kompensieren."
+  },
+  "Frostsicheres Kiesgemisch 0/32": {
+    norms: ["R RTE 21110 Kap. 5.3","SN 670 120 (Kiesgemisch)"],
+    values: [["Körnung","0/32 mm"],["Eigenschaft","Frostsicher (F1 nach SN)"],["Schichtdicke","je nach Frosttiefe, min. 40–60 cm"],["Funktion","Planumsschutzschicht (PSS)"],["Verdichtungsgrad","≥ 95 % Proctordichte"]],
+    desc: "Die Planumsschutzschicht (PSS) aus frostsicherem Kiesgemisch 0/32 schützt den tragfähigen Untergrund vor Frostschäden. Sie puffert Temperaturschwankungen ab und verhindert Frosthebungen, die die Gleisgeometrie beeinträchtigen würden."
+  },
+  "ME1-Modul Grenzwerte (Verformbarkeit)": {
+    norms: ["R RTE 21110 Kap. 4","DIN 18196 (Bodenklassifikation)"],
+    values: [["Planum (Verformungsmodul Ev2)","≥ 45 MN/m² (Regelwert Schottergleise)"],["Planie (nach PSS)","≥ 80 MN/m²"],["Verhältnis Ev2/Ev1","≤ 2.2 (Verdichtungsnachweis)"],["Prüfmethode","Lastplattendruckversuch (LPV)"]],
+    desc: "Der ME1-Modul (Verformungsmodul) ist der massgebende Parameter für die Tragfähigkeit des Unterbaus. Er wird mit dem Lastplattendruckversuch (LPV) gemessen. Ungenügende Tragfähigkeit führt zu dauerhaften Setzungen und Geometrieschäden im Gleis."
+  },
+  "Quergefälle 3–5%": {
+    norms: ["R RTE 21110 Kap. 6","AB-EBV Art. 25 Kap. 6"],
+    values: [["Bituminöse Sperrschicht","≥ 3 % Quergefälle"],["Mineralische Sperrschicht / PSS","≥ 5 % Quergefälle"],["Richtung","Von Gleismitte zu Grabenachse"],["Zweck","Ableitung Niederschlags- und Sickerwasser"]],
+    desc: "Das Quergefälle des Planums ist entscheidend für die Entwässerung des Unterbaus. Stehendes Wasser unter dem Schotterbett führt zur Destabilisierung des Untergrundes, Feinmaterialaufstoss und Frostschäden."
+  },
+  "Sickergräben / Sickerleitungen": {
+    norms: ["R RTE 21110 Kap. 6","SN 640 340–640 360","AB-EBV Art. 25"],
+    values: [["Nennweite Sickerleitungen","min. DN 200 mm"],["Gefälle Sickerleitungen","min. 5 ‰"],["Schachtabstand","Regelwert 50 m, max. 100 m"],["Filterkies","nach SN 670 120"],["Inspektionsrohre","alle 25 m bei unzugänglichen Lagen"]],
+    desc: "Sickergräben mit perforierten Rohren (Drainagerohre) sammeln das durch den Schotter versickerte Wasser und leiten es geordnet ab. Die Dimensionierung erfolgt nach den massgebenden Niederschlagsmengen und Einzugsgebieten."
+  },
+
+  // OBERBAU – SCHOTTER
+  "Klasse 1: HG 1–2": {
+    norms: ["SN 670 110 / EN 13450","R RTE 21110 Anhang 4","AB-EBV Art. 25 Ziff. 3.6"],
+    values: [["Anwendung","Hauptgleise HG 1, 2 und 4"],["Material","Gebrochenes Hartgestein (Granit, Gneis, Basalt)"],["Körnung","32/50 mm"],["Mindest-LA-Wert","≤ 20 % (Los-Angeles-Koeffizient)"],["Flächigkeitskennwert FI","≤ 15 %"],["Mindestdicke Schotterbett","30–35 cm"]],
+    desc: "Gleisschotter Klasse 1 ist die höchste Qualitätsklasse und für hochbelastete Hauptgleise zwingend vorgeschrieben. Die strengen Anforderungen an LA-Wert und Kornform gewährleisten hohe Verschleissfestigkeit und gute Verzahnungseigenschaften."
+  },
+  "Klasse 2: HG 3–5": {
+    norms: ["SN 670 110 / EN 13450","R RTE 21110 Anhang 4"],
+    values: [["Anwendung","Hauptgleise HG 3, 5 und Nebengleise"],["Material","Gebrochenes Hartgestein (auch Kalkstein zugelassen)"],["Körnung","32/50 mm"],["Mindest-LA-Wert","≤ 25 %"],["Flächigkeitskennwert FI","≤ 20 %"]],
+    desc: "Gleisschotter Klasse 2 darf für geringer belastete Gleise eingesetzt werden. Die etwas gelockerten Anforderungen ermöglichen die Verwendung von mehr Gesteinsarten, inklusive gewisser Kalksteine, was wirtschaftlichere Beschaffung erlaubt."
+  },
+  "Regeldicke 30–35 cm": {
+    norms: ["R RTE 21110 Anhang 4","AB-EBV Art. 25"],
+    values: [["Hauptgleise HG 1–4","35 cm Regeldicke"],["Hauptgleise HG 5","30 cm"],["Auf Brücken","min. 30 cm"],["Nebengleise E4","min. 20 cm"],["Messung","Unterkante Schwelle bis Oberkante Sperrschicht/Planie"]],
+    desc: "Die Schotterbettdicke bestimmt die Lastverteilung auf den Untergrund und beeinflusst die Gleislagerhaltung. Eine ausreichende Bettungsdicke ist Voraussetzung für eine effektive Stopfarbeit (Stopfreserve) und die Filterwirkung des Schotters."
+  },
+
+  // SCHWELLEN
+  "Monoblock B91": {
+    norms: ["SN EN 13230-2","D RTE 22040 Kap. 6.4","R I-22211"],
+    values: [["Typ","Monolithische Betonschwelle"],["Standard","B91 (SBB-Normalschwelle), Maba L2"],["Länge","2.60 m"],["Gewicht","ca. 300 kg"],["Schwellenabstand","60 cm (HG/NG 1), 67 cm (NG 2/3)"],["Befestigung","System W/Ws mit Skl 1 oder Skl 14"],["Einsatz","Nur in lückenlosen Gleisen (LVG)"]],
+    desc: "Die Monoblockschwelle B91 ist die Standardbetonschwelle der SBB. Ihre hohe Masse und Steifigkeit garantieren gute Gleislagestabilität. Betonschwellen dürfen ausschliesslich in lückenlosen Gleisen (LVG) eingebaut werden, da thermische Ausdehnungen bei geschienten Stössen zur Schienenwanderung führen würden."
+  },
+  "Zweiblockschwellen": {
+    norms: ["SN EN 13230-4","D RTE 22040 Kap. 6.4"],
+    values: [["Aufbau","Zwei getrennte Betonblöcke auf Stahlverbinder"],["Vorteil","Geringeres Gewicht, flexibler"],["Einsatz","Spezielle Lagen, Übergangsbereich"],["Befestigung","System W mit Spannklemmen"],["Bedingung","Nur in LVG"]],
+    desc: "Zweiblockschwellen bestehen aus zwei Einzelblöcken, die durch einen Stahlverbinder verbunden sind. Sie bieten mehr Flexibilität bei der Einbindung in den Schotter und werden in besonderen Situationen eingesetzt."
+  },
+  "Trog-Stahlschwellen": {
+    norms: ["D RTE 22040 Kap. 6.5","SN EN 13481"],
+    values: [["Typen","Typ 140, Typ 220/L"],["Material","Walzstahl, feuerverzinkt"],["Länge","ca. 2.30–2.50 m"],["Einsatz","Enge Durchfahrtshöhen, Tunnel, Unterführungen"],["Vorteil","Geringste Konstruktionshöhe aller Schwellentypen"],["Befestigung","System K/Ke mit Skl 3"]],
+    desc: "Trog-Stahlschwellen ermöglichen die minimale Konstruktionshöhe des Gleisrostes und werden überall dort eingesetzt, wo die lichte Höhe knapp ist. Im Gegensatz zu Betonschwellen dürfen sie sowohl in LVG als auch in geschienten Gleisen verwendet werden."
+  },
+  "Y-Schwellen": {
+    norms: ["D RTE 22040 Kap. 6.5"],
+    values: [["Form","Y-förmiges Stahlprofil (Dreieck im Querschnitt)"],["Vorteil","Sehr hoher Querverschiebewiderstand"],["Einsatz","Enge Bögen, kritische LVG-Zonen"],["Besonderheit","Kein Schotterbett unter dem Steg nötig"],["Befestigung","Integrierte Befestigung"]],
+    desc: "Y-Stahlschwellen haben durch ihre spezielle Y-Form einen sehr hohen Querverschiebewiderstand. Dies macht sie besonders geeignet für enge Bögen und Stellen, wo erhöhte LVG-Stabilität erforderlich ist. Ihr Einsatz ist jedoch teuer und wird gezielt geplant."
+  },
+  "Imprägnierte Eiche": {
+    norms: ["D RTE 22040 Kap. 6.6","SN EN 13145"],
+    values: [["Material","Eichenholz, kreosotimprägniert"],["Abmessungen","15 × 26 × 250 cm (Breite × Höhe × Länge)"],["Lebensdauer","30–50 Jahre"],["Einsatz","Übergangsbereiche, geringe Bauhöhe, Weichenbereich"],["Befestigung","System K mit Hakennägeln oder Schrauben"]],
+    desc: "Holzschwellen aus imprägnierter Eiche werden hauptsächlich in Übergangsbereichen (z.B. Holz→Beton), bei geringer verfügbarer Bauhöhe und in Weichenbereichen eingesetzt. Trotz der geringeren Steifigkeit im Vergleich zu Beton bieten sie gute Dämpfungseigenschaften und Elastizität."
+  },
+
+  // SCHIENEN
+  "60E1 (SBB VI)": {
+    norms: ["SN EN 13674-1","R I-22211 Kap. 2.3.1","R RTE 22240 Kap. 3.2"],
+    values: [["Profil","60E1 (früher UIC 60)"],["SBB-Bezeichnung","SBB VI"],["Gewicht","60.34 kg/m"],["Kopfbreite","72 mm"],["Steghöhe","172 mm"],["Einsatz","HG 1 und 2, Hochgeschwindigkeitsgleise"],["Stahlgüte","R260 oder R350HT"]],
+    desc: "Das Schienenprofil 60E1 (UIC 60) ist das schwerste und robusteste Standardprofil der SBB. Es wird auf den am stärksten belasteten Hauptgleisen eingesetzt und bietet die grösste Widerstandsfähigkeit gegen Biegebeanspruchung und Verschleiss."
+  },
+  "54E2 (SBB IV)": {
+    norms: ["SN EN 13674-1","R I-22211","R RTE 22240"],
+    values: [["Profil","54E2 (früher S54)"],["SBB-Bezeichnung","SBB IV"],["Gewicht","54.77 kg/m"],["Einsatz","HG 3–5, Weichen"],["Stahlgüte","R260 Standard"]],
+    desc: "Das Profil 54E2 (SBB IV) ist das meistverbreitete Schienenprofil im SBB-Netz. Es bietet eine gute Balance zwischen Tragfähigkeit und Wirtschaftlichkeit für mittlere und normale Hauptgleise sowie für Weichen."
+  },
+  "46E1 (SBB I)": {
+    norms: ["SN EN 13674-1","R I-22211","AB-EBV Art. 31 Ziff. 6"],
+    values: [["Profil","46E1"],["SBB-Bezeichnung","SBB I"],["Gewicht","46.10 kg/m"],["Einsatz","Nebengleise, Rangiergleise"],["Einschränkung","Verboten für Triebfahrzeuge Reihe D und N"]],
+    desc: "Das leichteste Standardprofil 46E1 (SBB I) ist auf schwach belastete Nebengleise beschränkt. Aufgrund seiner geringeren Tragfähigkeit ist sein Einsatz mit Triebfahrzeugen der Reihen D und N gemäss AB-EBV ausdrücklich verboten."
+  },
+  "R260 (Standard)": {
+    norms: ["SN EN 13674-1","R RTE 22240 Kap. 3.2","AB-EBV Art. 31"],
+    values: [["Stahlgüte","R260 (Verschleissfeste Standardqualität, VQ)"],["Mindeststreckgrenze","≥ 880 N/mm²"],["Brinellhärte Kopf","260 ± 25 HBW"],["Zugfestigkeit","880–1030 N/mm²"],["Anwendung","Standardgleise HG 1–5"],["Norm","EN 13674-1, Grade R260"]],
+    desc: "R260 ist die Standard-Stahlgüte für den Grossteil des SBB-Streckennetzes. Die Zahl 260 steht für die Brinellhärte von 260 HBW. Diese Güte bietet gute Verschleissbeständigkeit bei vertretbaren Kosten."
+  },
+  "R350HT (kopfgehärtet, enge Bögen)": {
+    norms: ["SN EN 13674-1","R RTE 22240 Kap. 3.2"],
+    values: [["Stahlgüte","R350HT (Premium-/Pearlitqualität, PQ)"],["Härteverfahren","Kopfhärtung (Head Hardening, HT)"],["Brinellhärte Kopf","350 ± 25 HBW"],["Mindeststreckgrenze","≥ 1175 N/mm²"],["Anwendung","Bögen R < 500 m, Weichen, HG 1–2 mit hohem Verschleiss"],["Kostenaufschlag","ca. 20–30 % gegenüber R260"]],
+    desc: "R350HT-Schienen haben einen durch Wärmebehandlung gehärteten Kopf. Die deutlich höhere Härte von 350 HBW reduziert den Schienenverschleiss in engen Bögen erheblich und verlängert die Standzeit. Der Einsatz ist wirtschaftlich ab Bogenradien unter 500 m."
+  },
+  "Spannklemmen Skl 1, 3, 14": {
+    norms: ["SN EN 13146-1","D RTE 22040","R I-22211"],
+    values: [["Skl 1","Für Betonschwellen, System W – Normalklemme"],["Skl 3","Für Holz- und Stahlschwellen, System K"],["Skl 14","Für Betonschwellen mit erhöhter Klemmkraft"],["Skl 12","Für Holz/Stahl bei erhöhter Klemmkraft"],["Klemmkraft","8–16 kN je Klemme (typ. 11 kN)"],["Norm","SN EN 13146-1 (statisch), SN EN 13146-2 (dynamisch)"]],
+    desc: "Spannklemmen sind die elastischen Zwischenglieder zwischen Schiene und Schwelle. Sie übertragen die Vertikallast, verhindern die Schienenneigung und erzeugen durch Vorspannung eine definierte Klemmkraft zur Sicherung gegen Wandern."
+  },
+
+  // LVG
+  "Sollwert Neutralisationstemperatur: 25°C": {
+    norms: ["R RTE 22041 Kap. 6.2","AB-EBV Art. 31 Ziff. 5.3"],
+    values: [["Regelwert HG/NG 1","25 °C (Toleranz: 22–28 °C)"],["Tessin (südl. Biasca)","28 °C (Toleranz: 25–31 °C)"],["Nebengleise NG 2/3","22 °C (Toleranz: 16–28 °C)"],["Tunnel","Schweissen ab +10 °C ohne Neutralisation möglich"],["Kontrollpflicht","nach Extremtemperaturen und Störungen"]],
+    desc: "Die Neutralisationstemperatur (NT) ist die Temperatur, bei der das LVG spannungslos ist. Bei dieser Temperatur baut die Schiene weder Drucknoch Zugkräfte auf. Der SBB-Regelwert von 25°C (ca. Jahresmitteltemperatur + Offset) sichert, dass auch bei extremer Hitze (Druckgefahr → Verwerfung) und Kälte (Zuggefahr → Schienenbruch) ausreichende Reserven vorhanden sind."
+  },
+  "Schutz gegen Gleisverwerfung": {
+    norms: ["R RTE 22041","AB-EBV Art. 31 Ziff. 5"],
+    values: [["Kritische Periode","Sommer, hohe Schienentemperatur"],["Massnahmen","Vollprofil-Schotterbett, ausreichende Verdichtung"],["Sicherungskappe (SiK)","bei R < 500 m"],["Sperrung","bei stark erhöhter Entgleisungsgefahr"],["Prüfung nach Stopfung","Verdichtungszug oder 100'000 Bruttotonnen vor Freigabe"]],
+    desc: "Gleisverwerfung (Buckling) tritt auf, wenn die thermischen Druckkräfte im LVG den Querverschiebewiderstand des Schotters übersteigen. Dies ist besonders nach Stopfarbeiten kritisch, da der Schotter aufgelockert ist. Sicherungsmassnahmen umfassen Vollprofil-Schotterbett, Sicherungskappen und Verdichtungsfahrten."
+  },
+
+  // WEICHEN
+  "Spurweite": {
+    norms: ["D RTE 22056","R RTE 22066","AB-EBV Art. 32 Ziff. 6"],
+    values: [["Sollwert","1435 mm (Normalspur)"],["Betriebsgrenzwert min.","1430 mm"],["Betriebsgrenzwert max.","1470 mm"],["Abnahme-Grenzwert max.","1445 mm (Neubau/Erneuerung)"]],
+    desc: "Die Spurweite in Weichen wird strenger überwacht als in freier Strecke. Massgebend sind die Kontrollmasse gemäss D RTE 22056. Abweichungen können zu Entgleisungen oder Zwängen im Herzstückbereich führen."
+  },
+  "Leitweite": {
+    norms: ["D RTE 22056","R RTE 22066"],
+    values: [["EW I/VI","1394 mm"],["EW IV (Holzschwellen)","1393 mm"],["EW IV/90","1395 mm"],["Funktion","Abstand zwischen Führungsfläche Radlenker und Herzstückspitze"],["Bedeutung","Verhindert Auffahren auf die Herzstückspitze"]],
+    desc: "Die Leitweite ist das Mass zwischen der führenden Fläche des Radlenkers und der Herzstückspitze. Ein zu kleiner Wert führt zum Auffahren des Spurkranzes auf die Herzstückspitze, was zu Entgleisungen führen kann."
+  },
+  "Rillenweite": {
+    norms: ["D RTE 22056","R RTE 22066"],
+    values: [["EW I/VI","41 mm"],["EW IV","40 mm"],["Toleranz","+ 5 mm / - 0 mm"],["Funktion","Spurkranzdurchgang im Herzstückbereich"]],
+    desc: "Die Rillenweite ist die lichte Weite der Rille im Herzstückbereich, durch die der Spurkranz des Rades geführt wird. Zu geringe Rillenweite klemmt den Spurkranz; zu grosse Rillenweite gefährdet die Führung."
+  },
+  "Federweichen SBB I, IV, VI": {
+    norms: ["D RTE 22056","SBB Katalog Weichen"],
+    values: [["SBB I","Abzweigradius R ≈ 190 m, kleine Weiche"],["SBB IV","Abzweigradius R ≈ 500 m, Standardweiche"],["SBB VI","Abzweigradius R ≈ 760 m, Hochgeschwindigkeit"],["Geschwindigkeit Geradeaus","bis 160 km/h (SBB VI)"],["Geschwindigkeit Abzweig","40 km/h (SBB I), 90 km/h (SBB IV/90)"]],
+    desc: "Die SBB unterscheidet Weichentypen nach dem Abzweigradius. Federweichen ermöglichen eine automatische Rückstellung in die Grundlage. Die Bezeichnung I, IV, VI entspricht dem verwendeten Schienenprofil (SBB I = 46E1, SBB IV = 54E2, SBB VI = 60E1)."
+  },
+  "Zungenvorrichtung (hZV)": {
+    norms: ["D RTE 22056 Kap. 4"],
+    values: [["Typ","hZV = hobelförmige Zungenvorrichtung"],["Komponenten","Zungenschienen + Backenschienen"],["Anlage","Zunge muss vollflächig an Backenschiene anliegen"],["Lücke max.","1 mm bei anliegender Zunge"]],
+    desc: "Die Zungenvorrichtung leitet das Rad in den gewünschten Fahrweg. Die Zungenschiene wird durch den Weichenantrieb gegen die Backenschiene gedrückt. Eine lückenlose Anlage ist sicherheitsrelevant – Lücken über 1 mm müssen sofort behoben werden."
+  },
+  "Weichenheizungen": {
+    norms: ["R RTE 22056 Kap. 8","SBB Weisung Weichenheizungen"],
+    values: [["Typen","Elektrisch (Heizstab) oder Gas (Infrarot)"],["Einsatztemperatur","Aktivierung bei ca. +3 °C, Niederschlag"],["Heizleistung","typ. 250–400 W/m Zunge"],["Steuerung","Automatisch via Witterungssensoren"],["Zweck","Freihaltung der Zungenlücke von Eis und Schnee"]],
+    desc: "Weichenheizungen sichern den störungsfreien Betrieb bei winterlichen Verhältnissen. Vereiste Zungen können nicht vollständig anliegen und erzeugen eine sicherheitskritische Lücke. Die Heizung wird automatisch bei Temperaturen nahe 0°C mit Niederschlag aktiviert."
+  },
+
+  // STOPFARBEITEN
+  "1. Stopfung": {
+    norms: ["R I-22070 Kap. 5.2","SN EN 13231-1"],
+    values: [["Vmax nach 1. Stopfung","50 km/h"],["Max. Hebung","100 mm"],["Schotter","Aufgelockert → Querverschiebewiderstand reduziert"],["Freigabe","Nur mit Langsamfahrstelle"],["Zweck","Grobe Lagekorrektur nach Einbau"]],
+    desc: "Die 1. Stopfung ist die erste Bearbeitung nach Gleiserneuerung oder grosser Korrektur. Der Schotter ist stark aufgelockert, was den Querverschiebewiderstand reduziert. Das Gleis erhält deshalb eine Geschwindigkeitsbeschränkung auf 50 km/h bis zur 2. Stopfung."
+  },
+  "2. Stopfung": {
+    norms: ["R I-22070 Kap. 5.2"],
+    values: [["Vmax nach 2. Stopfung","80 km/h"],["Max. Hebung","60 mm"],["Zeitintervall","nach ca. 100'000–300'000 Bruttotonnen"],["Zweck","Nachverdichtung, Feinkorrekturen"]],
+    desc: "Die 2. Stopfung erfolgt nach ausreichender Belastung durch Zugverkehr, der den Schotter teilweise reverdichtet. Die zulässige Geschwindigkeit kann auf 80 km/h angehoben werden. Die Geometrie wird weiter verfeinert."
+  },
+  "3. Stopfung": {
+    norms: ["R I-22070 Kap. 5.2"],
+    values: [["Freigabe Vmax","Volle Streckengeschwindigkeit (bis > 160 km/h)"],["Voraussetzung V > 140 km/h","Schotterbettverdichtung ODER 100'000 Bt Vorbelastung"],["Anschlussrampen V ≤ 125 km/h","≤ 1 ‰"],["Anschlussrampen V > 125 km/h","≤ 0.5 ‰"],["Geometrieprüfung","Messfahrt mit Gleismesswagen"],["Zweck","Definitive Freigabe"]],
+    desc: "Die 3. Stopfung ist die definitive Bearbeitung mit voller Geschwindigkeitsfreigabe. Bei Strecken über 140 km/h muss vor der Freigabe entweder ein Verdichtungszug (Stopfzug mit Verdichtungsaggregat) eingesetzt oder 100'000 Bruttotonnen Vorlaufbelastung sichergestellt werden."
+  },
+
+  // SCHWEISSEN
+  "Verbindungsschweissung im Gleis": {
+    norms: ["SN EN 14730-1/2","R RTE 22240","AB-EBV Art. 31"],
+    values: [["Verfahren","Aluminothermisches Schweissen (Thermit)"],["Portiongrösse","nach Schienenprofil (60E1: ca. 2.1 kg Al)"],["Vorwärmtemperatur","250–300 °C (propan- oder acetylenbasiert)"],["Abkühlzeit","mind. 20 min vor Bearbeitung"],["Zulassung","Nur SBB-zugelassene Portionen und Schweisser"],["Prüfung","Ultraschall-Nachprüfung nach 48 h"]],
+    desc: "Das aluminothermische Schweissverfahren (Thermit) ermöglicht das Verbinden von Schienen direkt im eingebauten Zustand. Die exotherme Reaktion zwischen Aluminium und Eisenoxid erzeugt flüssigen Stahl (ca. 2500°C), der in eine Keramikform um den Schweissspalt gegossen wird."
+  },
+  "Bis -10°C unter strengen Auflagen": {
+    norms: ["SBB-Spezialnorm I-50121","R RTE 22240"],
+    values: [["Standardverbot","Schweissen unter -5 °C"],["SBB-Ausnahme","Bis -10 °C bei Schienenbrüchen, U1-Fehlern, Oberbauerneuerungen"],["Auflagen","Intensives Vorwärmen, Nachwärmen, Steinwolleabdeckung"],["Protokollpflicht","Lückenlose Dokumentation Temperatur/Vorgehen"],["Freigabe","Durch zuständigen Fachverantwortlichen"]],
+    desc: "Schweissarbeiten unter -5°C sind grundsätzlich verboten, da die erhöhte Abkühlgeschwindigkeit die Schweissnahtqualität gefährdet. Die SBB-Ausnahmenorm I-50121 erlaubt unter sehr strengen Auflagen (Nachwärmen, Isolierung) Schweissungen bis -10°C für Notfälle und Dringlichkeiten."
+  },
+  "Ultraschallprüfung (Schienenfehler)": {
+    norms: ["SN EN 13236 (Ultraschall)","R RTE 22240","AB-EBV Art. 31"],
+    values: [["Methode","Impuls-Echo-Verfahren, Winkelprüfköpfe"],["Prüffrequenz","HG 1–2: jährlich; HG 3–5: alle 2 Jahre"],["Fehlerarten","Querrisse, Horizontalrisse, Schweissnahtfehler"],["Grenzwert","Ristfläche > 30 % → sofortige Massnahme"],["Prüffahrzeug","Schienenprüfwagen (z.B. Sperry, Speno)"]],
+    desc: "Die Ultraschallprüfung ermöglicht die zerstörungsfreie Detektion interner Schienenrisse, die von aussen nicht sichtbar sind. Besonders kritisch sind Querrisse (Transversalrisse, U1-Fehler), die ohne Vorwarnung zum Schienenbruch führen können."
+  },
+  "Wirbelstromprüfung (Head Checks)": {
+    norms: ["SN EN 13236","R RTE 22240 Kap. 5"],
+    values: [["Zieldefekt","Head Checks (HC) – Oberflächenrisse am Schienenkopf"],["Methode","Wirbelstrom-Array-Sonden"],["Entstehung HC","Rollkontaktermüdung (RCF) in engen Bögen"],["Kritische Tiefe","HC > 3 mm → Reprofilierung oder Austausch"],["Präventiv","Schienenschleifen verhindert HC-Entstehung"]],
+    desc: "Head Checks sind feine Schrägbrüche an der Lauffläche des Schienenkopfes, entstanden durch Rollkontaktermüdung. Sie wachsen schräg in den Schienenkopf und können zu Längsabbrüchen führen. Die Wirbelstromprüfung detektiert oberflächennahe Risse, die Ultraschall nicht erfasst."
+  },
+  "Präventives Schleifen / Reprofilieren": {
+    norms: ["R RTE 22240 Kap. 5","SBB Weisung Schienenpflege"],
+    values: [["Zyklus HG 1–2","ca. alle 2–3 Jahre (15–30 Mio. Bt)"],["Abtragsmenge","typ. 0.1–0.3 mm"],["Ziel","Entfernung Head Checks, Formerhalt"],["Verfahren","Profilschleifzug mit mehreren Schleifsteinen"],["Korrektiv","Reprofilierung bei HCs > 2 mm Tiefe"]],
+    desc: "Präventives Schienen schleifen ist die wichtigste Massnahme zur Vermeidung von Rollkontaktermüdung (RCF). Durch regelmässiges Abtragen einer dünnen Schicht werden entstehende Head Checks entfernt, bevor sie kritische Tiefe erreichen. Dies verlängert die Schienlebensdauer erheblich."
+  },
+
+  // USM / USP
+  "Unterschottermatten (USM)": {
+    norms: ["Weisung I-AM 05/02","SBB FB 400-0209"],
+    values: [["Systemanforderung Einsenkung","Statische Δe = 1 ± 0.2 mm"],["Material","Polyurethan-Schaum oder Gummigranulat"],["Dicke","typ. 25–40 mm"],["Einsatzort","Auf starrem Unterbau (Brücken, Tunnel)"],["Zweck","Körperschalldämmung, Erschütterungsreduktion"],["Mindest-Schotterbett","35 cm über USM"]],
+    desc: "Unterschottermatten (USM) werden zwischen Schotterbett und starrem Tragwerk (Brückenplatte, Tunnelsohle) eingelegt. Sie verringern die Körperschallübertragung ins Bauwerk erheblich und schützen gleichzeitig die Betonoberfläche vor Schotterpenetration. Die Einsenkungsanforderung von Δe = 1 mm balanciert Schalldämmung und Gleislagesstabilität."
+  },
+  "Schwellenbesohlung (USP)": {
+    norms: ["SBB FB 400-0209","SBB FB 400-0507"],
+    values: [["Steifigkeit mittelsteif","Cstat 0.20–0.25 N/mm³"],["Steifigkeit steif","Cstat 0.30–0.35 N/mm³"],["Mindest-Schotterbett","25 cm (Stopfreserve für Abdichtungsschutz)"],["Material","Gummigranulat oder Polyurethan"],["Vorteil vs. USM","Direkter auf Schwellenebene, kleinere Bautiefe möglich"]],
+    desc: "Schwellenbesohlungen (Under Sleeper Pads, USP) sind elastische Matten, die direkt an der Schwellenunterseite befestigt werden. Im Gegensatz zu Unterschottermatten (USM) können sie auch im Schottergleis auf normalem Unterbau eingesetzt werden. Sie reduzieren den Schotterverschleiss und verbessern die Gleislagestabilität."
+  },
+
+  // SICHERHEIT
+  "Sicherheitsdispositiv (SiDi)": {
+    norms: ["R RTE 20100","AB-EBV Art. 41"],
+    values: [["Inhalt","Vollständige Beschreibung aller Sicherheitsmassnahmen der Baustelle"],["Pflicht","Für alle Arbeiten im und am Gleis"],["Bestandteile","Warnanlage, Fluchtwege, Erdung, Verantwortlichkeiten"],["Genehmigung","Durch SBB-Betriebsleitung"],["Grundlage","R RTE 20100, R RTE 20600"]],
+    desc: "Das Sicherheitsdispositiv (SiDi) ist das Kerndokument der Arbeitssicherheit auf Baustellen im Gleisbereich. Es definiert für jede Betriebssituation die konkreten Schutzmassnahmen: Warnanlagen, Erdungsdispositive, Flucht- und Rettungswege sowie die Verantwortlichkeiten der Beteiligten."
+  },
+  "Warnsysteme (ATW)": {
+    norms: ["R RTE 20100","SN EN 50129 (SIL)","AB-EBV Art. 41"],
+    values: [["ATW","Automatisches Tonsignal-Warnsystem"],["SIL-Anforderung","SIL 3 (automatisch), SIL 1 (handbetätigt)"],["Warnzeit","Fahrzeit des Zuges (2–3 Sek.) + individuelle Räumzeit"],["Betriebsarten","Streckenblock, Zugsicherung, Baustrecke"],["Redundanz","Zwei unabhängige Übertragungswege"]],
+    desc: "Automatische Tonsignal-Warnsysteme (ATW) warnen Gleisarbeiter akustisch vor herannahenden Zügen. Gemäss SN EN 50129 müssen automatische Systeme Sicherheitsintegritätslevel SIL 3 erfüllen. Die Warnzeit setzt sich zusammen aus der Fahrzeit des Zuges bis zur Baustelle und der Räumzeit (Zeit zum sicheren Verlassen des Gleises)."
+  },
+
+  // FLANKENSCHUTZ
+  "Entgleisungsweichen": {
+    norms: ["R RTE 22056 Kap. 7","AB-EBV Art. 32"],
+    values: [["Funktion","Gezielte Entgleisung statt Kollision bei unerwünschter Einfahrt"],["Einsatz","Schutz besetzter Zugfahrstrassen"],["Bauart","Einfachweiche mit gesperrter Ablenkung"],["Aktivierung","Stellen auf Entgleisung bei besetztem Schutzbereich"]],
+    desc: "Entgleisungsweichen werden so gestellt, dass ein unbeabsichtigt einfahrendes Fahrzeug entgleist, bevor es einen anderen Zug gefährden kann. Sie sind Teil des Flankenschutzsystems und werden als Sicherheitsmassnahme an kritischen Einfahrten eingesetzt."
+  },
+  "Hayes-Entgleisungsvorrichtungen": {
+    norms: ["R RTE 22056 Kap. 7"],
+    values: [["Typ","Passiver Entgleisungsschutz im Gleis"],["Aufbau","Stahlprofil neben der Schiene"],["Funktion","Spurkranz hebt ab → kontrollierte Entgleisung"],["Vorteil","Keine Weichenstellung nötig, passiv"],["Einsatz","Steilrampen, Ablaufberge, Hafenanlagen"]],
+    desc: "Hayes-Entgleisungsvorrichtungen sind passive Vorrichtungen, die den Spurkranz des Rades aus der Schiene heben und so eine kontrollierte Entgleisung erzwingen. Im Gegensatz zur Entgleisungsweiche benötigen sie keinen Antrieb und sind dadurch wartungsarm."
+  },
+
+  // BRÜCKEN
+  "Dilatationsvorrichtungen (DV)": {
+    norms: ["R RTE 22041 Kap. 9","SBB Weisung Brücken/Gleis"],
+    values: [["Zweck","Ausgleich von Brückendehnungen ohne Schienenzug/-druck"],["Typ","Schienengleitlager, Schienenschlupf-DV"],["Einsatz","Brücken > ca. 90 m Spannweite oder grosse Temperaturhub"],["Schlupfweg","typ. ± 100–300 mm"],["Wartung","Jährliche Funktionskontrolle, Schmierung"]],
+    desc: "Dilatationsvorrichtungen (DV) erlauben dem Brückenüberbau, sich thermisch und lastbedingt zu dehnen, ohne diese Kräfte in die Schienen einzuleiten. Ohne DV würden lange Brücken unzulässige Zugkräfte im LVG erzeugen, die zum Schienenbruch führen könnten."
+  },
+
+  // LICHTRAUM
+  "Dienstweg (bD)": {
+    norms: ["AB-EBV Art. 36","R RTE 21xxx"],
+    values: [["Breite bD","mind. 0.90 m neben Lichtraum"],["Höhe","mind. 1.80 m"],["Zweck","Sicherer Arbeitsbereich für Streckenläufer/Mitarbeiter"],["Regelfall","Einseitig vorhanden (eine Seite des Gleises)"]],
+    desc: "Der Dienstweg ist ein gesicherter Bereich neben dem Gleislichtraum, der Streckenarbeitern das sichere Betreten der Strecke ermöglicht. Er muss eine minimale Breite und Höhe aufweisen und ist in der Titrierung der Lichtraumprofile definiert."
+  },
+  "Schlupfweg (bS)": {
+    norms: ["AB-EBV Art. 36","R RTE"],
+    values: [["Breite bS","mind. 0.70 m"],["Funktion","Minimaler Notausweichraum bei herannahendem Zug"],["Unterschied zu bD","Kein vollwertiger Arbeitsbereich, nur Ausweichnische"]],
+    desc: "Der Schlupfweg ist der minimale seitliche Freiraum neben dem Lichtraumprofil, der es einem Streckenarbeiter erlaubt, einem herannahenden Zug auszuweichen. Er ist schmaler als der Dienstweg und stellt nur eine Notausweichmöglichkeit dar."
+  },
+  "Regelwert HG: 3.80 m": {
+    norms: ["AB-EBV Art. 36","R RTE 21110"],
+    values: [["Gleisabstand Hauptgleise (HG)","3.80 m Mittenabstand"],["Gleisabstand mit Bahnsteig","4.00 m"],["Mindestabstand im Ausnahmefall","3.50 m (mit Zustimmung BAV)"],["Messung","Zwischen Gleisachsen bei Parallelgleisen im geraden Gleis"]],
+    desc: "Der Regelwert von 3.80 m Gleisabstand zwischen Parallelgleisen auf Hauptstrecken stellt sicher, dass keine aerodynamischen Beeinträchtigungen zwischen entgegenfahrenden Zügen auftreten und ein ausreichender Arbeitsraum für Gleisunterhalt verbleibt."
+  }
+};
+
+// ─── DIALOG LOGIC ─────────────────────────────────────────────────────────────
+const overlay = document.getElementById('dialog-overlay');
+const titleEl = document.getElementById('dialog-title');
+const bodyEl  = document.getElementById('dialog-body');
+
+function showDialog(key, data) {
+  titleEl.textContent = key;
+  let html = '';
+
+  if (data.norms && data.norms.length) {
+    html += `<div class="dlg-section"><h3>Normen &amp; Standards</h3><div class="norm-badges">`;
+    data.norms.forEach(n => { html += `<span class="norm-badge">${n}</span>`; });
+    html += `</div></div>`;
+  }
+
+  if (data.values && data.values.length) {
+    html += `<div class="dlg-section"><h3>Technische Werte</h3><table class="values-table">`;
+    data.values.forEach(([k, v]) => { html += `<tr><td>${k}</td><td>${v}</td></tr>`; });
+    html += `</table></div>`;
+  }
+
+  if (data.desc) {
+    html += `<div class="dlg-section"><h3>Beschreibung</h3><p class="dlg-desc">${data.desc}</p></div>`;
+  }
+
+  bodyEl.innerHTML = html;
+  overlay.classList.add('open');
+}
+
+function hideDialog() { overlay.classList.remove('open'); }
+
+document.getElementById('dialog-close').addEventListener('click', hideDialog);
+overlay.addEventListener('click', e => { if (e.target === overlay) hideDialog(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hideDialog(); });
+
+// ─── ATTACH CLICK HANDLERS VIA MUTATION OBSERVER ─────────────────────────────
+const attached = new WeakSet();
+
+function attachHandlers() {
+  document.querySelectorAll('g.markmap-node').forEach(node => {
+    if (attached.has(node)) return;
+    const fo = node.querySelector('foreignObject');
+    if (!fo) return;
+    const text = fo.textContent.trim();
+    if (DETAILS[text]) {
+      attached.add(node);
+      fo.style.cursor = 'pointer';
+      node.classList.add('has-detail');
+      fo.addEventListener('click', e => {
+        e.stopPropagation();
+        showDialog(text, DETAILS[text]);
+      });
+    }
+  });
+}
+
+const observer = new MutationObserver(attachHandlers);
+observer.observe(document.getElementById('mindmap'), { childList: true, subtree: true });
+// Also run after initial render
+setTimeout(attachHandlers, 800);
+setTimeout(attachHandlers, 2000);
+</script>
+</body>
+</html>
